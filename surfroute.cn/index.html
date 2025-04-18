@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>踏浪</title>
+  <!-- 网站favicon.ico -->
+  <link rel="icon" href="src/logo.webp" type="image/x-icon">
+  <style>
+    body {
+      margin: 0px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      height: 100%;
+
+
+    }
+
+    .button-light {
+      height: 45px;
+      width: auto;
+      padding: 0px 20px 0px 20px;
+      background-color: white;
+      border: 2px solid #333;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      display: flex;
+      align-items: center;
+    }
+
+    .button-light:hover {
+      background-color: #333;
+      color: white;
+    }
+
+    .button-dark {
+      height: 45px;
+      width: auto;
+      padding: 0px 20px 0px 10px;
+      background-color: #333;
+      border: 2px solid white;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      color: white;
+      display: flex;
+      align-items: center;
+    }
+
+    .button-dark:hover {
+      background-color: white;
+      color: #333333;
+      border: 2px solid #333;
+    }
+
+
+
+    footer {
+      background-color: #333;
+      color: white;
+      padding: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
+
+    .service-operations,
+    .friend-links {
+      margin: 10px;
+      min-width: 100px;
+    }
+
+    .service-operations h3,
+    .friend-links h3 {
+      margin-bottom: 10px;
+    }
+
+    .service-operations ul,
+    .friend-links ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .service-operations ul li,
+    .friend-links ul li {
+      margin-bottom: 5px;
+    }
+
+    .service-operations ul li a,
+    .friend-links ul li a {
+      color: white;
+      text-decoration: none;
+    }
+
+    .service-operations ul li a:hover,
+    .friend-links ul li a:hover {
+      text-decoration: underline;
+    }
+
+    .copyright {
+      width: 100%;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .left-section {
+      width: 100%;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .right-section {
+      width: 100%;
+      padding: 20px;
+      box-sizing: border-box;
+      position: relative;
+      /* 新增，限制图片容器的尺寸 */
+      height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .right-section img {
+      /* 修改，确保图片不超出容器 */
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 12px;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .right-section img.active {
+      opacity: 1;
+    }
+
+    /* 横屏适配 */
+    @media (orientation: landscape) {
+      .content {
+        display: flex;
+        flex-direction: row;
+      }
+
+      .left-section {
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+      }
+
+      .right-section {
+        width: 50%;
+      }
+    }
+  </style>
+  <style>
+    /* 在原有样式基础上新增 */
+    html {
+      scroll-snap-type: y mandatory;
+      overflow-y: scroll;
+      scroll-behavior: smooth;
+      height: 100vh;
+      /* 确保滚动容器高度正确 */
+    }
+
+    /* 修改现有内容区块定义 */
+    .content {
+      margin: 0;
+      min-height: 100vh;
+      scroll-snap-align: start;
+      padding: 20px;
+      box-sizing: border-box;
+      display: flex;
+      flex-wrap: wrap;
+      align-content: center;
+      /* 新增垂直居中 */
+    }
+
+    /* 调整横屏适配 */
+    @media (orientation: landscape) {
+      .content {
+        flex-direction: row;
+        align-items: center;
+      }
+
+      .left-section {
+        padding: 0 40px;
+      }
+    }
+  </style>
+  <style>
+    /* 统一内容区块高度 */
+    .content {
+      min-height: 100vh;
+
+      margin-top: 0 !important;
+      /* 强制移除所有顶部间距 */
+      box-sizing: border-box;
+      /* 包含padding计算高度 */
+    }
+
+    /* 移除之前的高度补偿规则 */
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      height: 100px;
+      background: rgba(255, 255, 255, 1);
+      /* 移除 margin-bottom */
+    }
+
+    /* 调整横屏模式 */
+    @media (orientation: landscape) {
+      .content {}
+    }
+  </style>
+  <style>
+    /* 在原有样式基础上新增 */
+    .left-section h1 {
+      /* border-left: 5px solid #333; */
+      /* padding-left: 20px; */
+    }
+
+    .right-section img[alt="功能示意图"] {
+      border: 2px solid #eee;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    @media (max-width: 768px) {
+      .left-section div[style*="columns"] {
+        columns: 1 !important;
+      }
+    }
+  </style>
+  <style>
+    /* 修复内容区块高度计算 */
+    .content {
+      min-height: calc(100vh);
+      /* 减去header高度 */
+    }
+
+    /* 调整表格容器高度 */
+    .right-section {
+      height: auto;
+      /* 覆盖原来的400px固定高度 */
+      min-height: 400px;
+      /* 保持最小高度 */
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="content">
+    <!-- <header>
+        <div class="header" id="header">    
+          <img src="./src/logo.svg" alt="应用图片徽标" style="width: 50px;">
+          <img src="./src/logo_text.svg" alt="应用文字徽标，文字内容是SurfRoute." style="width: 120px;">
+        </div> -->
+    <!-- <button class="button-light" onclick="window.location.hash = 'footer';">联系我们</button> -->
+    <!-- </header> -->
+    <div class="left-section">
+      <!-- <div class="header" id="header">    
+          <img src="./src/logo.svg" alt="应用图片徽标" style="width: 50px;">
+          <img src="./src/logo_text.svg" alt="应用文字徽标，文字内容是SurfRoute." style="width: 120px;">
+        </div> -->
+      <h1 style="font-size: 36px;">
+        踏浪</br>通往你的向往
+      </h1>
+      <h4 style="color: #222;">
+        背上行囊，向心之所向出发。踏浪而行，穿越山川湖海，解锁秘境奇遇。让向往照进现实，与踏浪同行，遇见更精彩的远方！
+      </h4>
+      <button class="button-dark" style="margin-top: 40px;"
+        onclick="window.open('./src/package/apk/SurfRoute_1.0.0_beta.APK')">
+        <img src="./src/android.svg" alt="android图标" style="width: 30px;margin-right: 10px;">
+        获取 Andriod 应用
+      </button>
+    </div>
+    <div class="right-section">
+      <!-- 假设 ./src/pic/ 文件夹下有 3 张图片 -->
+      <img src="./src/pic/0.jpg" alt="">
+      <img src="./src/pic/1.jpg" alt="">
+      <img src="./src/pic/2.jpg" alt="">
+      <img src="./src/pic/3.jpg" alt="">
+
+    </div>
+
+  </div>
+  <div class="content" style="background-color: #222;">
+    <div class="left-section">
+      <h1 style="font-size: 36px; margin-bottom: 30px;color: #f2f2f2;">
+        穿越城市
+      </h1>
+      <h4 style="color: #f2f2f2;">
+        「长江灯光秀」的典范：<br><br>
+        🌉 长江两岸建筑群披上霓虹华服，倒映江面宛如星河<br>
+        🚢 夜游轮渡穿梭江面，甲板视角尽览25公里岸线风光<br>
+        🏙️ 龟山电视塔灯光照耀夜空，与黄鹤楼金顶遥相辉映<br>
+        🌃 江汉关钟楼夜间亮化，百年建筑焕发现代光影魅力<br><br>
+        这里是武汉·长江夜景<br>
+
+
+      </h4>
+
+    </div>
+    <div class="right-section">
+      <!-- 假设 ./src/pic/ 文件夹下有 3 张图片 -->
+      <img src="./src/pic/4.jpg" alt="">
+      <img src="./src/pic/5.jpg" alt="">
+
+    </div>
+  </div>
+  <div class="content" style="background-color: #862617;">
+    <div class="left-section">
+      <h1 style="font-size: 36px; margin-bottom: 30px;color: #ffe5e5;">
+        品读历史
+      </h1>
+      <h4 style="color: #ffe5e5;">
+        「千年古都」文明见证：<br><br>
+        🏯 八达岭长城蜿蜒山脊，砖石铭刻军事防御智慧<br>
+        🌌 天坛祈年殿鎏金宝顶，展现帝王祭天仪典庄严<br>
+        🏛️ 圆明园遗址残柱矗立，见证中西园林艺术交融<br>
+        🏮 故宫红墙黄瓦连绵，明清皇家建筑集大成者<br><br>
+        这里是首都·北京<br>
+
+      </h4>
+
+    </div>
+
+    <div class="right-section">
+      <!-- 假设 ./src/pic/ 文件夹下有 3 张图片 -->
+      <img src="./src/pic/6.jpg" alt="">
+      <img src="./src/pic/7.jpg" alt="">
+      <img src="./src/pic/8.jpg" alt="">
+
+    </div>
+  </div>
+  <div class="content" style="background-color: #e9f3ff;">
+    <div class="left-section">
+      <!-- <div class="header" id="header">    
+        <img src="./src/logo.svg" alt="应用图片徽标" style="width: 50px;">
+        <img src="./src/logo_text.svg" alt="应用文字徽标，文字内容是SurfRoute." style="width: 120px;">
+      </div> -->
+      <h1 style="font-size: 36px;color: #000823;">
+        详细的规划</br>时间与空间
+      </h1>
+      <h4 style="color: rgb(34, 34, 34)30b;">
+        你可以事无巨细，详细规划您的行程，亦可以让人工智能大模型帮您提供思路。踏浪不会打扰您详细的绘制路线和标注。
+      </h4>
+
+    </div>
+
+  </div>
+  <div class="content" style="background-color: #e9fff2;">
+    <div class="left-section">
+      <!-- <div class="header" id="header">    
+        <img src="./src/logo.svg" alt="应用图片徽标" style="width: 50px;">
+        <img src="./src/logo_text.svg" alt="应用文字徽标，文字内容是SurfRoute." style="width: 120px;">
+      </div> -->
+      <h1 style="font-size: 36px;color: #002315;">
+        交通自定义</br>
+      </h1>
+      <h4 style="color: #00430b;">
+        即便地图中没有您想要的交通工具，您也可以自定义交通工具和交通线。
+      </h4>
+
+    </div>
+
+  </div>
+  <div class="content" style="background-color: #fce9ff;">
+    <div class="left-section">
+      <!-- <div class="header" id="header">    
+        <img src="./src/logo.svg" alt="应用图片徽标" style="width: 50px;">
+        <img src="./src/logo_text.svg" alt="应用文字徽标，文字内容是SurfRoute." style="width: 120px;">
+      </div> -->
+      <h1 style="font-size: 36px;color: #160023;">
+        踏浪AI</br>
+      </h1>
+      <h4 style="color: #3c0043;">
+        让极为智能的人工大模型，为您讲解旅游目的和提供最佳支持。
+      </h4>
+
+    </div>
+
+  </div>
+  <div class="content">
+    <!-- 表格 -->
+    <div class="left-section">
+      <h1 style="font-size: 36px;">
+        发行版本
+      </h1>
+      <h4 style="color: #222;">
+        您可以在这里获取到踏浪在不同平台的发行版本。请您注意，一些过于老旧的版本可能无法正常在您的设备上运行，推荐您使用最新版本。此外，含有“beta”标识的版本是踏浪的公开测试版本，可能存在功能不稳定的情况，请您按需下载。
+      </h4>
+    </div>
+    <div class="right-section">
+      <table
+        style="width: 100%; border-collapse: collapse; box-shadow: 0 0 20px rgba(0, 0, 0, 0.15); border-radius: 10px; overflow: hidden;">
+        <thead>
+          <tr style="background-color: #333; color: white; text-align: left;">
+            <th style="padding: 12px 15px;">版本</th>
+            <th style="padding: 12px 15px;">平台</th>
+            <th style="padding: 12px 15px;">发布日期</th>
+            <th style="padding: 12px 15px;">下载</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- 这里可以添加表格行数据 -->
+          <tr style="border-bottom: 1px solid #dddddd;">
+            <td style="padding: 12px 15px;">1.0.0_beta</td>
+            <td style="padding: 12px 15px;">Android</td>
+            <td style="padding: 12px 15px;">2024-04-17</td>
+            <td style="padding: 12px 15px;"><a href="./src/package/apk/SurfRoute_1.0.0_beta.APK"
+                style="color: #00885d; text-decoration: none;">下载</a></td>
+          </tr>
+
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <footer align="left" id="footer" class="content">
+    <!-- <div class="left-section"> -->
+      <div class="service-operations">
+        <h3>文档</h3>
+        <ul>
+          <li><a href="document/SoftwareLicenseAgreement.html">软件服务协议</a></li>
+          <li><a href="document/SoftwarePrivacyPolicy.html">软考隐私政策</a></li>
+          <li><a href="document/SoftwarePermissions.html">应用运行权限</a></li>
+          <li><a href="document/SoftwarPlusService.html">踏浪会员协议</a></li>
+          <li><a href="document/SoftwareBill.html">部分账目公示</a></li>
+        </ul>
+      </div>
+      <div class="friend-links">
+        <h3>产品</h3>
+        <ul>
+          <li><a href="#header">踏浪Android</a></li>
+          <li><a href="https://surfroute.apifox.cn">踏浪开放平台</a></li>
+          <li><a href="http://www.zhanshuo.top">Print Lab</a></li>
+          <li><a href="https://www.aliyun.com">阿里云</a></li>
+        </ul>
+      </div>
+      <div class="friend-links">
+        <h3>关注踏浪</h3>
+        <ul>
+
+          <li>添加踏浪官方QQ社群</br>反馈问题或交流技术</li>
+          <li>
+            <img src="./src/qq_qr_code.png" alt="QQ图标" style="width: 120px;margin-right: 10px;">
+          </li>
+        </ul>
+      </div>
+    <!-- </div> -->
+
+    <div class="right-section">
+      <div class="copyright">
+        <p> @XiaoBaiBZS 作品 </p>
+        <p> Copyright © 2024-2025 ZhanshuoBai. </p>
+        <p>黑ICP备2024017115号-3</p>
+      
+      </div>
+    </div>
+
+
+  </footer>
+
+  <script>
+    // 修改后的轮播逻辑
+    document.querySelectorAll('.right-section').forEach(section => {
+      const images = section.querySelectorAll('img');
+      if (images.length === 0) return;
+
+      let currentIndex = 0;
+
+      // 初始化激活状态
+      images.forEach(img => img.classList.remove('active'));
+      images[0].classList.add('active');
+
+      // 使用独立定时器
+      const interval = setInterval(() => {
+        images[currentIndex].classList.remove('active');
+        currentIndex = (currentIndex + 1) % images.length;
+        images[currentIndex].classList.add('active');
+      }, 3000);
+
+      // 清除定时器引用
+      section.dataset.interval = interval;
+    });
+  </script>
+  <script>
+    // 添加平滑滚动补偿
+    document.addEventListener('wheel', (e) => {
+      if (Math.abs(e.deltaY) < 5) return; // 忽略微小滚动
+      window.scrollBy({
+        top: e.deltaY > 0 ? window.innerHeight : -window.innerHeight,
+        behavior: 'smooth'
+      });
+      e.preventDefault();
+    }, { passive: false });
+  </script>
+</body>
+
+</html>
